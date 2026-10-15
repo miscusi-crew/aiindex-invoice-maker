@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoice Maker</title>
+<link rel="icon" href="icon.svg">
+<link rel="stylesheet" href="base.css">
+<style>
+  main{max-width:52rem}
+  .sheet{border:1px solid var(--line);border-radius:.75rem;padding:1.5rem;background:var(--card);margin-top:.75rem}
+  .top{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .top h2{font-size:1.8rem;margin:0;letter-spacing:.04em}
+  .parties{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+  @media (max-width:36rem){.parties{grid-template-columns:1fr}}
+  .field{display:grid;gap:.2rem;font-size:.85rem;color:var(--muted)}
+  .field input,.field textarea{color:var(--fg);font-size:.95rem}
+  .field textarea{min-height:5rem;resize:vertical}
+  table{width:100%;border-collapse:collapse;margin:.5rem 0}
+  th{text-align:left;font-size:.8rem;color:var(--muted);font-weight:500;padding:.3rem}
+  td{padding:.25rem .3rem}
+  td input{width:100%}
+  td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+  .tot{display:grid;justify-content:end;gap:.25rem;font-variant-numeric:tabular-nums;margin-top:.5rem}
+  .tot div{display:flex;justify-content:space-between;gap:2rem}
+  .tot .grand{font-size:1.3rem;font-weight:800;border-top:2px solid var(--fg);padding-top:.35rem}
+  .del{border:0;background:transparent;color:var(--muted)}
+  @media print{
+    body{background:#fff;color:#000}
+    main{max-width:none;padding:0}
+    h1,.sub,.noprint,.del{display:none!important}
+    .sheet{border:0;padding:0;background:#fff}
+    input,textarea,select{border:0!important;padding:0!important;background:none!important;color:#000!important;resize:none}
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Invoice Maker</h1>
+  <p class="sub">Fill it in, then Print or save as PDF. Your own details are remembered in this browser.</p>
+  <div class="row noprint"><button id="print" class="primary">Print / Save PDF</button><button id="new">New invoice</button>
+    <label for="cur">Currency</label><input id="cur" value="$" style="width:4rem" maxlength="4"></div>
+  <div class="sheet">
+    <div class="top">
+      <div class="field" style="flex:1;max-width:22rem"><span>From</span><textarea id="from" placeholder="Your name or business&#10;Address&#10;Email"></textarea></div>
+      <div style="text-align:right"><h2>INVOICE</h2>
+        <div class="field"><span>Number</span><input id="num" style="text-align:right"></div>
+        <div class="field"><span>Date</span><input id="date" type="date"></div>
+        <div class="field"><span>Due</span><input id="due" type="date"></div>
+      </div>
+    </div>
+    <div class="parties"><div class="field"><span>Bill to</span><textarea id="to" placeholder="Client name&#10;Address"></textarea></div></div>
+    <table><thead><tr><th>Description</th><th class="n" style="width:5rem">Qty</th><th class="n" style="width:7rem">Price</th><th class="n" style="width:7rem">Amount</th><th style="width:2rem"></th></tr></thead><tbody id="items"></tbody></table>
+    <button id="add" class="noprint">+ Add line</button>
+    <div class="tot">
+      <div><span>Subtotal</span><span id="sub">0.00</span></div>
+      <div><span>Tax <input id="tax" inputmode="decimal" value="0" style="width:3.5rem;text-align:right">%</span><span id="taxv">0.00</span></div>
+      <div class="grand"><span>Total</span><span id="total">0.00</span></div>
+    </div>
+    <div class="field" style="margin-top:1rem"><span>Notes</span><textarea id="notes" placeholder="Payment details, thank-you note…"></textarea></div>
+  </div>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
